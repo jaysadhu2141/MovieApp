@@ -4,6 +4,7 @@ import 'package:movieapp/controller/homecontroller.dart';
 import 'package:movieapp/device/device_utils.dart';
 import 'package:movieapp/resource/app_colors.dart';
 import 'package:movieapp/resource/app_style.dart';
+import 'package:movieapp/screen/moviedetail.dart';
 
 
 class Home extends GetView<HomeController> {
@@ -34,7 +35,6 @@ class Home extends GetView<HomeController> {
                 fontWeight: FontWeight.w500),
           ),
           bottom: TabBar(
-
             indicatorColor: AppColors.yellow,
             onTap: (int index){
               if(index == 0){
@@ -51,10 +51,10 @@ class Home extends GetView<HomeController> {
             unselectedLabelColor: AppColors.white,
             indicatorWeight: 3.0,
 
-            tabs: [
-              const Tab(text: 'Populer',),
-              const Tab(text: 'Top Rated'),
-              const Tab(text: 'Up Coming'),
+            tabs: const [
+              Tab(text: 'Populer',),
+              Tab(text: 'Top Rated'),
+              Tab(text: 'Up Coming'),
             ],
           ),
         ),
@@ -78,71 +78,77 @@ class Home extends GetView<HomeController> {
                       return Center(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: AppStyle.customMovieCard(context: context,
-                          column:
-                          Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  children: [
-                                    AppStyle.customImageCard(context: context, imagePath: controllerr.popularMovieDetails.value.results![index].posterPath.toString()),
-                                    AppStyle.space(0.0, 0.033, context),
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      width: DeviceUtils.getScaledWidth(context, 0.51),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          AppStyle.text(title: controllerr.popularMovieList[index].originalTitle.toString(),
-                                            maxLine: 2,
-                                            overflowDot: TextOverflow.ellipsis,
-                                            fontSize: 18,
-                                            tColor: AppColors.black,
-                                            textWeight: FontWeight.w500,
-                                          ),
-                                          AppStyle.space(0.005, 0.0, context),
-                                          AppStyle.text(title: controllerr.popularMovieList[index].overview.toString(),
-                                            maxLine: 3,
-                                            overflowDot: TextOverflow.ellipsis,
-                                            fontSize: 14,
-                                            tColor: AppColors.darkGray,
-                                            textWeight: FontWeight.w500,
-                                          ),
-                                          AppStyle.space(0.01, 0.0, context),
-                                          AppStyle.text(title: 'Release Date: ${controllerr.popularMovieList[index].releaseDate.toString()}',
-                                            fontSize: 12,
-                                            tColor: AppColors.darkGray,
-                                            textWeight: FontWeight.w400,
-                                          ),
-                                          AppStyle.space(0.005, 0.0, context),
+                          child: InkWell(
+                            onTap: (){
+                              Get.toNamed(MovieDetail.pageId,
+                                  arguments:
+                                  controllerr.popularMovieList[index].id);
+                            },
+                            child: AppStyle.customMovieCard(context: context,
+                            column: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      AppStyle.customImageCard(context: context, imagePath: controllerr.popularMovieDetails.value.results![index].posterPath.toString()),
+                                      AppStyle.space(0.0, 0.033, context),
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        width: DeviceUtils.getScaledWidth(context, 0.51),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            AppStyle.text(title: controllerr.popularMovieList[index].originalTitle.toString(),
+                                              maxLine: 2,
+                                              overflowDot: TextOverflow.ellipsis,
+                                              fontSize: 18,
+                                              tColor: AppColors.black,
+                                              textWeight: FontWeight.w500,
+                                            ),
+                                            AppStyle.space(0.005, 0.0, context),
+                                            AppStyle.text(title: controllerr.popularMovieList[index].overview.toString(),
+                                              maxLine: 3,
+                                              overflowDot: TextOverflow.ellipsis,
+                                              fontSize: 14,
+                                              tColor: AppColors.darkGray,
+                                              textWeight: FontWeight.w500,
+                                            ),
+                                            AppStyle.space(0.01, 0.0, context),
+                                            AppStyle.text(title: 'Release Date: ${controllerr.popularMovieList[index].releaseDate.toString()}',
+                                              fontSize: 12,
+                                              tColor: AppColors.darkGray,
+                                              textWeight: FontWeight.w400,
+                                            ),
+                                            AppStyle.space(0.005, 0.0, context),
 
-                                          AppStyle.text(title: 'Popularity: ${controllerr.popularMovieList[index].popularity.toString()}',
-                                            fontSize: 12,
-                                            tColor: AppColors.darkGray,
-                                            textWeight: FontWeight.w400,
-                                          ),
-                                          AppStyle.space(0.005, 0.0, context),
-                                          AppStyle.text(title: 'Vote Count: ${controllerr.popularMovieList[index].voteCount.toString()}',
-                                            fontSize: 12,
-                                            tColor: AppColors.darkGray,
-                                            textWeight: FontWeight.w400,
-                                          ),
-                                          AppStyle.space(0.005, 0.0, context),
-                                          AppStyle.text(title: 'Vote Average: ${controllerr.popularMovieList[index].voteAverage.toString()}',
-                                            fontSize: 12,
-                                            tColor: AppColors.darkGray,
-                                            textWeight: FontWeight.w400,
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],),
+                                            AppStyle.text(title: 'Popularity: ${controllerr.popularMovieList[index].popularity.toString()}',
+                                              fontSize: 12,
+                                              tColor: AppColors.darkGray,
+                                              textWeight: FontWeight.w400,
+                                            ),
+                                            AppStyle.space(0.005, 0.0, context),
+                                            AppStyle.text(title: 'Vote Count: ${controllerr.popularMovieList[index].voteCount.toString()}',
+                                              fontSize: 12,
+                                              tColor: AppColors.darkGray,
+                                              textWeight: FontWeight.w400,
+                                            ),
+                                            AppStyle.space(0.005, 0.0, context),
+                                            AppStyle.text(title: 'Vote Average: ${controllerr.popularMovieList[index].voteAverage.toString()}',
+                                              fontSize: 12,
+                                              tColor: AppColors.darkGray,
+                                              textWeight: FontWeight.w400,
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],),
                         ),
+                          ),
                       )
                       );
                     }
@@ -168,70 +174,77 @@ class Home extends GetView<HomeController> {
                 return Center(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: AppStyle.customMovieCard(context: context,
-                        column:
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  AppStyle.customImageCard(context: context, imagePath: controllerr.topRatedMovieDetails.value.results![index].posterPath.toString()),
-                                  AppStyle.space(0.0, 0.033, context),
-                                  Container(
-                                    alignment: Alignment.centerLeft,
-                                    width: DeviceUtils.getScaledWidth(context, 0.51),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        AppStyle.text(title: controllerr.topRatedMovieDetails.value.results![index].originalTitle.toString(),
-                                          maxLine: 2,
-                                          overflowDot: TextOverflow.ellipsis,
-                                          fontSize: 18,
-                                          tColor: AppColors.black,
-                                          textWeight: FontWeight.w500,
-                                        ),
-                                        AppStyle.space(0.005, 0.0, context),
-                                        AppStyle.text(title: controllerr.topRatedMovieDetails.value.results![index].overview.toString(),
-                                          maxLine: 3,
-                                          overflowDot: TextOverflow.ellipsis,
-                                          fontSize: 14,
-                                          tColor: AppColors.darkGray,
-                                          textWeight: FontWeight.w500,
-                                        ),
-                                        AppStyle.space(0.01, 0.0, context),
-                                        AppStyle.text(title: 'Release Date: ${controllerr.topRatedMovieDetails.value.results![index].releaseDate.toString()}',
-                                          fontSize: 12,
-                                          tColor: AppColors.darkGray,
-                                          textWeight: FontWeight.w400,
-                                        ),
-                                        AppStyle.space(0.005, 0.0, context),
+                      child: InkWell(
+                        onTap: (){
+                          Get.toNamed(MovieDetail.pageId,
+                              arguments:
+                              controllerr.topRatedMovieDetails.value.results![index].id);
+                        },
+                        child: AppStyle.customMovieCard(context: context,
+                          column:
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    AppStyle.customImageCard(context: context, imagePath: controllerr.topRatedMovieDetails.value.results![index].posterPath.toString()),
+                                    AppStyle.space(0.0, 0.033, context),
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      width: DeviceUtils.getScaledWidth(context, 0.51),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          AppStyle.text(title: controllerr.topRatedMovieDetails.value.results![index].originalTitle.toString(),
+                                            maxLine: 2,
+                                            overflowDot: TextOverflow.ellipsis,
+                                            fontSize: 18,
+                                            tColor: AppColors.black,
+                                            textWeight: FontWeight.w500,
+                                          ),
+                                          AppStyle.space(0.005, 0.0, context),
+                                          AppStyle.text(title: controllerr.topRatedMovieDetails.value.results![index].overview.toString(),
+                                            maxLine: 3,
+                                            overflowDot: TextOverflow.ellipsis,
+                                            fontSize: 14,
+                                            tColor: AppColors.darkGray,
+                                            textWeight: FontWeight.w500,
+                                          ),
+                                          AppStyle.space(0.01, 0.0, context),
+                                          AppStyle.text(title: 'Release Date: ${controllerr.topRatedMovieDetails.value.results![index].releaseDate.toString()}',
+                                            fontSize: 12,
+                                            tColor: AppColors.darkGray,
+                                            textWeight: FontWeight.w400,
+                                          ),
+                                          AppStyle.space(0.005, 0.0, context),
 
-                                        AppStyle.text(title: 'Popularity: ${controllerr.topRatedMovieDetails.value.results![index].popularity.toString()}',
-                                          fontSize: 12,
-                                          tColor: AppColors.darkGray,
-                                          textWeight: FontWeight.w400,
-                                        ),
-                                        AppStyle.space(0.005, 0.0, context),
-                                        AppStyle.text(title: 'Vote Count: ${controllerr.topRatedMovieDetails.value.results![index].voteCount.toString()}',
-                                          fontSize: 12,
-                                          tColor: AppColors.darkGray,
-                                          textWeight: FontWeight.w400,
-                                        ),
-                                        AppStyle.space(0.005, 0.0, context),
-                                        AppStyle.text(title: 'Vote Average: ${controllerr.topRatedMovieDetails.value.results![index].voteAverage.toString()}',
-                                          fontSize: 12,
-                                          tColor: AppColors.darkGray,
-                                          textWeight: FontWeight.w400,
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            )
-                          ],),
+                                          AppStyle.text(title: 'Popularity: ${controllerr.topRatedMovieDetails.value.results![index].popularity.toString()}',
+                                            fontSize: 12,
+                                            tColor: AppColors.darkGray,
+                                            textWeight: FontWeight.w400,
+                                          ),
+                                          AppStyle.space(0.005, 0.0, context),
+                                          AppStyle.text(title: 'Vote Count: ${controllerr.topRatedMovieDetails.value.results![index].voteCount.toString()}',
+                                            fontSize: 12,
+                                            tColor: AppColors.darkGray,
+                                            textWeight: FontWeight.w400,
+                                          ),
+                                          AppStyle.space(0.005, 0.0, context),
+                                          AppStyle.text(title: 'Vote Average: ${controllerr.topRatedMovieDetails.value.results![index].voteAverage.toString()}',
+                                            fontSize: 12,
+                                            tColor: AppColors.darkGray,
+                                            textWeight: FontWeight.w400,
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],),
+                        ),
                       ),
                     )
                 );
@@ -250,70 +263,77 @@ class Home extends GetView<HomeController> {
               return Center(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: AppStyle.customMovieCard(context: context,
-                      column:
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                AppStyle.customImageCard(context: context, imagePath: controllerr.upComingMovieDetails.value.results![index].posterPath.toString()),
-                                AppStyle.space(0.0, 0.033, context),
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  width: DeviceUtils.getScaledWidth(context, 0.51),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      AppStyle.text(title: controllerr.upComingMovieDetails.value.results![index].originalTitle.toString(),
-                                        maxLine: 2,
-                                        overflowDot: TextOverflow.ellipsis,
-                                        fontSize: 18,
-                                        tColor: AppColors.black,
-                                        textWeight: FontWeight.w500,
-                                      ),
-                                      AppStyle.space(0.005, 0.0, context),
-                                      AppStyle.text(title: controllerr.upComingMovieDetails.value.results![index].overview.toString(),
-                                        maxLine: 3,
-                                        overflowDot: TextOverflow.ellipsis,
-                                        fontSize: 14,
-                                        tColor: AppColors.darkGray,
-                                        textWeight: FontWeight.w500,
-                                      ),
-                                      AppStyle.space(0.01, 0.0, context),
-                                      AppStyle.text(title: 'Release Date: ${controllerr.upComingMovieDetails.value.results![index].releaseDate.toString()}',
-                                        fontSize: 12,
-                                        tColor: AppColors.darkGray,
-                                        textWeight: FontWeight.w400,
-                                      ),
-                                      AppStyle.space(0.005, 0.0, context),
+                    child: InkWell(
+                      onTap: (){
+                        Get.toNamed(MovieDetail.pageId,
+                            arguments:
+                            controllerr.upComingMovieDetails.value.results![index].id);
+                      },
+                      child: AppStyle.customMovieCard(context: context,
+                        column:
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  AppStyle.customImageCard(context: context, imagePath: controllerr.upComingMovieDetails.value.results![index].posterPath.toString()),
+                                  AppStyle.space(0.0, 0.033, context),
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    width: DeviceUtils.getScaledWidth(context, 0.51),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        AppStyle.text(title: controllerr.upComingMovieDetails.value.results![index].originalTitle.toString(),
+                                          maxLine: 2,
+                                          overflowDot: TextOverflow.ellipsis,
+                                          fontSize: 18,
+                                          tColor: AppColors.black,
+                                          textWeight: FontWeight.w500,
+                                        ),
+                                        AppStyle.space(0.005, 0.0, context),
+                                        AppStyle.text(title: controllerr.upComingMovieDetails.value.results![index].overview.toString(),
+                                          maxLine: 3,
+                                          overflowDot: TextOverflow.ellipsis,
+                                          fontSize: 14,
+                                          tColor: AppColors.darkGray,
+                                          textWeight: FontWeight.w500,
+                                        ),
+                                        AppStyle.space(0.01, 0.0, context),
+                                        AppStyle.text(title: 'Release Date: ${controllerr.upComingMovieDetails.value.results![index].releaseDate.toString()}',
+                                          fontSize: 12,
+                                          tColor: AppColors.darkGray,
+                                          textWeight: FontWeight.w400,
+                                        ),
+                                        AppStyle.space(0.005, 0.0, context),
 
-                                      AppStyle.text(title: 'Popularity: ${controllerr.upComingMovieDetails.value.results![index].popularity.toString()}',
-                                        fontSize: 12,
-                                        tColor: AppColors.darkGray,
-                                        textWeight: FontWeight.w400,
-                                      ),
-                                      AppStyle.space(0.005, 0.0, context),
-                                      AppStyle.text(title: 'Vote Count: ${controllerr.upComingMovieDetails.value.results![index].voteCount.toString()}',
-                                        fontSize: 12,
-                                        tColor: AppColors.darkGray,
-                                        textWeight: FontWeight.w400,
-                                      ),
-                                      AppStyle.space(0.005, 0.0, context),
-                                      AppStyle.text(title: 'Vote Average: ${controllerr.upComingMovieDetails.value.results![index].voteAverage.toString()}',
-                                        fontSize: 12,
-                                        tColor: AppColors.darkGray,
-                                        textWeight: FontWeight.w400,
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-                        ],),
+                                        AppStyle.text(title: 'Popularity: ${controllerr.upComingMovieDetails.value.results![index].popularity.toString()}',
+                                          fontSize: 12,
+                                          tColor: AppColors.darkGray,
+                                          textWeight: FontWeight.w400,
+                                        ),
+                                        AppStyle.space(0.005, 0.0, context),
+                                        AppStyle.text(title: 'Vote Count: ${controllerr.upComingMovieDetails.value.results![index].voteCount.toString()}',
+                                          fontSize: 12,
+                                          tColor: AppColors.darkGray,
+                                          textWeight: FontWeight.w400,
+                                        ),
+                                        AppStyle.space(0.005, 0.0, context),
+                                        AppStyle.text(title: 'Vote Average: ${controllerr.upComingMovieDetails.value.results![index].voteAverage.toString()}',
+                                          fontSize: 12,
+                                          tColor: AppColors.darkGray,
+                                          textWeight: FontWeight.w400,
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )
+                          ],),
+                      ),
                     ),
                   )
               );
