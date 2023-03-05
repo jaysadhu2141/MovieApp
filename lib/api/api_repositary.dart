@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:movieapp/Model/model_get_populer_movies.dart';
+import 'package:movieapp/Model/model_get_movies.dart';
 import 'package:movieapp/resource/app_string.dart';
 import 'api_path.dart';
 
@@ -81,32 +81,90 @@ class ApiRepository {
   //   }
   // }
 
-  Future<ModelGetPopulerMovie?> getPopularMovie(
-      { VoidCallback? onNoInternet}) async {
+  Future<ModelGetMovie?> getPopularMovie(
+      {int? pageCount,VoidCallback? onNoInternet}) async {
     final connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
       if (onNoInternet != null) onNoInternet();
       return null;
     }
     const String tag = 'getPopularMovie';
-    ModelGetPopulerMovie? data;
-
-    // var headers = await getHeaderWithToken();
-    // showApiLog('$tag header: $headers');
+    ModelGetMovie? data;
     var store = {'api_key':'9776330dc76bf80fa28e9cde5742a552'};
     String quaryString = Uri(queryParameters: store).query;
-    var url = Uri.parse('${ApiPath.getUpcomingMovies}?$quaryString');
+    //
+    // var pageNO = {'page': pageCount};
+    // String quaryPageString = Uri(queryParameters: pageNO).query;
+
+    var url = Uri.parse('${ApiPath.getPopularMovies}?$quaryString');
     showApiLog('$tag URL: $url');
-    // Map<String, String> queryParams = {
-    //   'api_key': '<<api_key>>',
-    // };
-    //var quaryString = Uri.parse(queryParams).query;
     try {
       var response = await http.get(url,);
       showApiLog('$tag Response: Status Code: ${response.statusCode}');
       showApiLog('$tag Response: ${response.body}');
       var decodedResult = jsonDecode(response.body);
-      data = ModelGetPopulerMovie.fromJson(decodedResult);
+      data = ModelGetMovie.fromJson(decodedResult);
+      return data;
+    } on SocketException {
+      showApiLog('$tag ${AppStrings.strNoInternetConnection}');
+      return null;
+    } catch (error) {
+      showApiLog('$tag Error: ${error.toString()}');
+      return null;
+    }
+  }
+
+  Future<ModelGetMovie?> getTopRatedMovie(
+      { VoidCallback? onNoInternet}) async {
+    final connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      if (onNoInternet != null) onNoInternet();
+      return null;
+    }
+    const String tag = 'getTopRatedMovie';
+    ModelGetMovie? data;
+
+    var store = {'api_key':'9776330dc76bf80fa28e9cde5742a552'};
+    String quaryString = Uri(queryParameters: store).query;
+
+    var url = Uri.parse('${ApiPath.getTopRatedMovies}?$quaryString');
+    showApiLog('$tag URL: $url');
+
+    try {
+      var response = await http.get(url,);
+      showApiLog('$tag Response: Status Code: ${response.statusCode}');
+      showApiLog('$tag Response: ${response.body}');
+      var decodedResult = jsonDecode(response.body);
+      data = ModelGetMovie.fromJson(decodedResult);
+      return data;
+    } on SocketException {
+      showApiLog('$tag ${AppStrings.strNoInternetConnection}');
+      return null;
+    } catch (error) {
+      showApiLog('$tag Error: ${error.toString()}');
+      return null;
+    }
+  }
+
+  Future<ModelGetMovie?> getUpComingMovie(
+      { VoidCallback? onNoInternet}) async {
+    final connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      if (onNoInternet != null) onNoInternet();
+      return null;
+    }
+    const String tag = 'getUpComingMovie';
+    ModelGetMovie? data;
+    var store = {'api_key':'9776330dc76bf80fa28e9cde5742a552'};
+    String quaryString = Uri(queryParameters: store).query;
+    var url = Uri.parse('${ApiPath.getUpcomingMovies}?$quaryString');
+    showApiLog('$tag URL: $url');
+    try {
+      var response = await http.get(url,);
+      showApiLog('$tag Response: Status Code: ${response.statusCode}');
+      showApiLog('$tag Response: ${response.body}');
+      var decodedResult = jsonDecode(response.body);
+      data = ModelGetMovie.fromJson(decodedResult);
       return data;
     } on SocketException {
       showApiLog('$tag ${AppStrings.strNoInternetConnection}');

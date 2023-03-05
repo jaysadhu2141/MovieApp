@@ -5,5 +5,7 @@ class ApiPath {
 
 
 
-  static const getUpcomingMovies = '$baseUrl/popular?<api_key>';
+  static const getPopularMovies = '$baseUrl/popular';
+  static const getTopRatedMovies = '$baseUrl/top_rated';
+  static const getUpcomingMovies = '$baseUrl/upcoming';
 }

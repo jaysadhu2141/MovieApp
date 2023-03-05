@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:movieapp/Model/model_get_populer_movies.dart';
+import 'package:movieapp/Model/model_get_movies.dart';
 import 'package:movieapp/api/api_repositary.dart';
 import 'package:movieapp/controller/base_controller.dart';
 import 'package:movieapp/device/app_utility.dart';
@@ -14,25 +14,103 @@ class HomeController extends BaseController {
   @override
   void onInit() {
     super.onInit();
+   // await paginateTask();
     getPopularMovie();
+    getTopRatedMovie();
+    getUpComingMovie();
   }
 
-  Rx<ModelGetPopulerMovie> popularMovieDetails = ModelGetPopulerMovie().obs;
-  RxBool isApiLoading = true.obs;
+  Rx<ModelGetMovie> popularMovieDetails = ModelGetMovie().obs;
+  Rx<ModelGetMovie> topRatedMovieDetails = ModelGetMovie().obs;
+  Rx<ModelGetMovie> upComingMovieDetails = ModelGetMovie().obs;
+  var popularMovieList = <Results>[].obs;
+  RxBool isPopularApiLoading = true.obs;
+  RxBool isUpComingApiLoading = true.obs;
+  RxBool isTopRatedApiLoading = true.obs;
   BuildContext? context;
 
-  getPopularMovie() async {
-    isApiLoading.value = true;
-    ModelGetPopulerMovie? master =
-    await ApiRepository().getPopularMovie(onNoInternet: () {
+  // var scrollcontroller = ScrollController();
+  // RxBool showbtn = false.obs;
+  // int count = 1;
+  // final loadingPopularMovie = false.obs;
+
+  getPopularMovie({int? pag}) async {
+    isPopularApiLoading.value = true;
+    ModelGetMovie? master =
+    await ApiRepository().getPopularMovie(
+        onNoInternet: () {
       AppUtility.showRedToastMessage(context, AppStrings.strNoInternetConnection);
     });
       if (master != null) {
-        isApiLoading.value = false;
-        popularMovieDetails.value = master;
-      } else {
+        isPopularApiLoading.value = false;
+       // if(count == 1) {
+          popularMovieDetails.value = master;
+          popularMovieList.addAll(master.results!);
+       // }
+        //else{
+        //  popularMovieList.insertAll(master.results!.length, master.results!);
+        //}
+      }
+      else {
         AppUtility.showRedToastMessage(context, 'data not found');
       }
+    //loadingPopularMovie.value = false;
   }
+
+  getTopRatedMovie() async {
+    isTopRatedApiLoading.value = true;
+    ModelGetMovie? master =
+    await ApiRepository().getTopRatedMovie(onNoInternet: () {
+      AppUtility.showRedToastMessage(context, AppStrings.strNoInternetConnection);
+    });
+    if (master != null) {
+      isTopRatedApiLoading.value = false;
+      topRatedMovieDetails.value = master;
+    } else {
+      AppUtility.showRedToastMessage(context, 'data not found');
+    }
+  }
+
+  getUpComingMovie() async {
+    isUpComingApiLoading.value = true;
+    ModelGetMovie? master =
+    await ApiRepository().getUpComingMovie(onNoInternet: () {
+      AppUtility.showRedToastMessage(context, AppStrings.strNoInternetConnection);
+    });
+    if (master != null) {
+      isUpComingApiLoading.value = false;
+      upComingMovieDetails.value = master;
+    } else {
+      AppUtility.showRedToastMessage(context, 'data not found');
+    }
+  }
+
+
+  // paginateTask() {
+  //   double showoffset = 20.0;
+  //   scrollcontroller.addListener(() {
+  //     if(scrollcontroller.offset > showoffset){
+  //       showbtn.value = true;
+  //
+  //     }else{
+  //       showbtn.value = false;
+  //
+  //     }
+  //     if (scrollcontroller.position.pixels ==
+  //         scrollcontroller.position.maxScrollExtent) {
+  //       if (popularMovieDetails.value.page! < popularMovieDetails.value.results!.length) {
+  //         count++;
+  //         loadingPopularMovie.value = true;
+  //         getPopularMovie(pag: count);
+  //       }
+  //       else {
+  //         // isLoading.value = true;
+  //       }
+  //     }
+  //     else{
+  //
+  //     }
+  //   });
+  // }
 
 }

@@ -1,13 +1,13 @@
-class ModelGetPopulerMovie {
+class ModelGetMovie {
   int? page;
   List<Results>? results;
   int? totalResults;
   int? totalPages;
 
-  ModelGetPopulerMovie(
+  ModelGetMovie(
       {this.page, this.results, this.totalResults, this.totalPages});
 
-  ModelGetPopulerMovie.fromJson(Map<String, dynamic> json) {
+  ModelGetMovie.fromJson(Map<String, dynamic> json) {
     page = json['page'];
     if (json['results'] != null) {
       results = <Results>[];
@@ -42,10 +42,10 @@ class Results {
   String? originalLanguage;
   String? title;
   String? backdropPath;
-  double? popularity;
-  int? voteCount;
+  String? popularity;
+  String? voteCount;
   bool? video;
-  double? voteAverage;
+  String? voteAverage;
 
   Results({this.posterPath,
     this.adult,
@@ -73,10 +73,10 @@ class Results {
     originalLanguage = json['original_language'];
     title = json['title'];
     backdropPath = json['backdrop_path'];
-    popularity = json['popularity'];
-    voteCount = json['vote_count'];
+    popularity = json['popularity'].toString();
+    voteCount = json['vote_count'].toString();
     video = json['video'];
-    voteAverage = json['vote_average'];
+    voteAverage = json['vote_average'].toString();
   }
 
   Map<String, dynamic> toJson() {
