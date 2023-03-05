@@ -63,10 +63,12 @@ class AppStyle {
 
   static Widget customImageCard({BuildContext? context,
     String? imagePath,
+    double? height,
+    double? width,
   }) {
     return Container(
-        height: DeviceUtils.getScaledWidth(context!, 0.495),
-        width: DeviceUtils.getScaledHeight(context!, 0.15),
+        height: DeviceUtils.getScaledWidth(context!, width ?? 0.495),
+        width: DeviceUtils.getScaledHeight(context!, height ?? 0.15),
         child: Image.network('https://image.tmdb.org/t/p/w500${imagePath!}',));
   }
 

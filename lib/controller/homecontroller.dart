@@ -14,7 +14,6 @@ class HomeController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-   // await paginateTask();
     getPopularMovie();
     getTopRatedMovie();
     getUpComingMovie();
@@ -29,10 +28,6 @@ class HomeController extends BaseController {
   RxBool isTopRatedApiLoading = true.obs;
   BuildContext? context;
 
-  // var scrollcontroller = ScrollController();
-  // RxBool showbtn = false.obs;
-  // int count = 1;
-  // final loadingPopularMovie = false.obs;
 
   getPopularMovie({int? pag}) async {
     isPopularApiLoading.value = true;
@@ -43,18 +38,14 @@ class HomeController extends BaseController {
     });
       if (master != null) {
         isPopularApiLoading.value = false;
-       // if(count == 1) {
+
           popularMovieDetails.value = master;
           popularMovieList.addAll(master.results!);
-       // }
-        //else{
-        //  popularMovieList.insertAll(master.results!.length, master.results!);
-        //}
+
       }
       else {
         AppUtility.showRedToastMessage(context, 'data not found');
       }
-    //loadingPopularMovie.value = false;
   }
 
   getTopRatedMovie() async {
@@ -84,33 +75,4 @@ class HomeController extends BaseController {
       AppUtility.showRedToastMessage(context, 'data not found');
     }
   }
-
-
-  // paginateTask() {
-  //   double showoffset = 20.0;
-  //   scrollcontroller.addListener(() {
-  //     if(scrollcontroller.offset > showoffset){
-  //       showbtn.value = true;
-  //
-  //     }else{
-  //       showbtn.value = false;
-  //
-  //     }
-  //     if (scrollcontroller.position.pixels ==
-  //         scrollcontroller.position.maxScrollExtent) {
-  //       if (popularMovieDetails.value.page! < popularMovieDetails.value.results!.length) {
-  //         count++;
-  //         loadingPopularMovie.value = true;
-  //         getPopularMovie(pag: count);
-  //       }
-  //       else {
-  //         // isLoading.value = true;
-  //       }
-  //     }
-  //     else{
-  //
-  //     }
-  //   });
-  // }
-
 }

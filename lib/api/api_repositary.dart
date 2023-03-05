@@ -4,6 +4,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:movieapp/Model/model_get_movies.dart';
+import 'package:movieapp/Model/model_movie_details.dart';
 import 'package:movieapp/resource/app_string.dart';
 import 'api_path.dart';
 
@@ -175,5 +176,33 @@ class ApiRepository {
     }
   }
 
+  Future<ModelMovieDetails?> getMovieDetail(
+      { VoidCallback? onNoInternet, int? id}) async {
+    final connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      if (onNoInternet != null) onNoInternet();
+      return null;
+    }
+    const String tag = 'getMovieDetail';
+    ModelMovieDetails? data;
+    var store = {'api_key':'9776330dc76bf80fa28e9cde5742a552'};
+    String quaryString = Uri(queryParameters: store).query;
+    var url = Uri.parse('${ApiPath.getMovieDetail}$id?$quaryString');
+    showApiLog('$tag URL: $url');
+    try {
+      var response = await http.get(url);
+      showApiLog('$tag Response: Status Code: ${response.statusCode}');
+      showApiLog('$tag Response: ${response.body}');
+      var decodedResult = jsonDecode(response.body);
+      data = ModelMovieDetails.fromJson(decodedResult);
+      return data;
+    } on SocketException {
+      showApiLog('$tag ${AppStrings.strNoInternetConnection}');
+      return null;
+    } catch (error) {
+      showApiLog('$tag Error: ${error.toString()}');
+      return null;
+    }
+  }
 
 }

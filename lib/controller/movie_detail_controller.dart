@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:movieapp/Model/model_get_movies.dart';
+import 'package:movieapp/Model/model_movie_details.dart';
 import 'package:movieapp/api/api_repositary.dart';
 import 'package:movieapp/controller/base_controller.dart';
 import 'package:movieapp/device/app_utility.dart';
@@ -11,27 +12,29 @@ class MovieDetailController extends BaseController {
   void errorHandler() {
 
   }
+  int? movieId;
   @override
-  void onInit() {
+  void onInit() async{
     super.onInit();
-
-
+    movieId = Get.arguments;
+    await getMovieDetails(mId: movieId);
   }
 
 
-  Rx<ModelGetMovie> topRatedMovieDetails = ModelGetMovie().obs;
-  RxBool isTopRatedApiLoading = true.obs;
+  Rx<ModelMovieDetails> movieDetails = ModelMovieDetails().obs;
+  RxBool isApiLoading = true.obs;
   BuildContext? context;
 
-  getTopRatedMovie() async {
-    isTopRatedApiLoading.value = true;
-    ModelGetMovie? master =
-    await ApiRepository().getTopRatedMovie(onNoInternet: () {
+  getMovieDetails({int? mId}) async {
+    isApiLoading.value = true;
+    ModelMovieDetails? master = await ApiRepository().getMovieDetail(
+        id: mId,
+        onNoInternet: () {
       AppUtility.showRedToastMessage(context, AppStrings.strNoInternetConnection);
     });
     if (master != null) {
-      isTopRatedApiLoading.value = false;
-      topRatedMovieDetails.value = master;
+      isApiLoading.value = false;
+      movieDetails.value = master;
     } else {
       AppUtility.showRedToastMessage(context, 'data not found');
     }

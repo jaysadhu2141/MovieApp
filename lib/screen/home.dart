@@ -266,8 +266,7 @@ class Home extends GetView<HomeController> {
                     child: InkWell(
                       onTap: (){
                         Get.toNamed(MovieDetail.pageId,
-                            arguments:
-                            controllerr.upComingMovieDetails.value.results![index].id);
+                            arguments: controllerr.upComingMovieDetails.value.results![index].id);
                       },
                       child: AppStyle.customMovieCard(context: context,
                         column:
